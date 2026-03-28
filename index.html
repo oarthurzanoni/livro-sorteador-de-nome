@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteio Abençoado - Bíblia</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="customAlert">Todos já foram sorteados!</div>
+
+    <!-- Modal de confirmação de reset -->
+    <div id="resetModal" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <p class="modal-title">Resetar Sorteio?</p>
+            <p class="modal-text">Isso vai apagar o histórico de todos os sorteados.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn-cancel" onclick="closeResetModal()">Cancelar</button>
+                <button class="modal-btn-confirm" onclick="confirmReset()">Resetar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="sky">
+        <div class="cloud">
+            <!-- Nuvens alinhadas no setor de 60% (meio do céu) -->
+            <img src="assets/cloud1.png" style="--i:1;" alt="cloud">
+            <img src="assets/cloud2.png" style="--i:2;" alt="cloud">
+            <img src="assets/cloud3.png" style="--i:3;" alt="cloud">
+            <img src="assets/cloud4.png" style="--i:4;" alt="cloud">
+            <img src="assets/cloud5.png" style="--i:5;" alt="cloud">
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="input-group">
+            <label for="nameList">Participantes</label>
+            <textarea id="nameList" oninput="autoResize(this)" placeholder="Nomes aqui...">Ana, Pedro, Lucas, Maria, João, Gabriel, Sara, Rebeca, Samuel</textarea>
+            <button class="btn-draw" id="drawBtn" onclick="drawName()">Sortear</button>
+            <button class="btn-reset" id="resetBtn" onclick="openResetModal()">↺ Resetar Sorteio</button>
+            <div class="stats" id="statsDisplay">Disponíveis: - | Sorteados: 0</div>
+        </div>
+    </div>
+
+    <div class="book-container">
+        <div id="bible" class="book">
+            
+            <!-- Parte Móvel: Capa + Página Esquerda -->
+            <div class="book-part cover-front">
+                <div class="face front">
+                    <div class="cross"></div>
+                    <h1 style="font-size: 1.8rem; text-align: center; margin-top: 20px;">SORTEIO<br>ABENÇOADO</h1>
+                    <p style="font-size: 0.6rem; letter-spacing: 3px; margin-top: 10px;">SHOW DE TALENTOS</p>
+                </div>
+                <div class="face back">
+                    <div class="page-content">
+                        <p style="font-weight: bold; color: #888; font-size: 0.8rem;">MEMÓRIA</p>
+                        <div id="historyList" style="font-size: 0.7rem; color: #999; line-height: 1.4; margin-top: 10px;">
+                            Lista de sorteados...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parte Fixa: Página Direita -->
+            <div class="book-part page-right">
+                <div class="page-content">
+                    <div style="font-size: 0.9rem; color: #777; text-transform: uppercase; letter-spacing: 1px;">O escolhido é:</div>
+                    <div id="resultName" class="winner-name">...</div>
+                    <div style="font-style: italic; font-size: 0.8rem; color: #555; margin-top: 15px;">
+                        "O Senhor te abençoe e te guarde." <br><strong>(Números 6:24)</strong>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="divine-glow"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

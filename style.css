@@ -1,0 +1,448 @@
+:root {
+  --primary-color: #4a0808;
+  --gold: #d4af37;
+  --paper: #fdf5e6;
+  --sky-top: #6db3f2;
+  --sky-bottom: #1e90ff;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Times New Roman", Times, serif;
+  background: transparent; /* Permite ver a camada .sky */
+}
+
+/* --- Fundo do Céu com Animação de Nuvens --- */
+.sky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  background: linear-gradient(
+    to bottom,
+    var(--sky-top) 0%,
+    var(--sky-bottom) 100%
+  );
+}
+
+.cloud {
+  overflow: hidden;
+}
+
+.cloud img {
+  position: absolute;
+  opacity: 0.6;
+  max-width: 100%;
+  animation: cld calc(8s * var(--i)) linear infinite;
+  pointer-events: none;
+  bottom: 0px;
+}
+
+@keyframes cld {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120vw);
+  }
+}
+
+/* --- Interface de Controle (Canto Inferior Direito) --- */
+.controls {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  z-index: 1000;
+  text-align: right;
+  max-width: 300px;
+}
+
+.input-group {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 15px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #003366;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+textarea {
+  width: 100%;
+  min-height: 50px;
+  max-height: 250px;
+  border-radius: 8px;
+  border: 1px solid var(--gold);
+  padding: 12px;
+  margin-bottom: 12px;
+  display: block;
+  resize: none;
+  overflow-y: hidden; /* Cresce conforme o conteúdo */
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.1rem;
+  background: rgba(255, 255, 255, 0.85);
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+textarea:focus {
+  border-width: 2px;
+  outline: none;
+}
+
+.btn-draw {
+  background: var(--primary-color);
+  color: var(--gold);
+  border: 2px solid var(--gold);
+  padding: 14px 25px;
+  font-size: 1.15rem;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 175, 55, 0.3);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.5px;
+}
+
+.btn-draw:hover:not(:disabled) {
+  background: #6a1010;
+  transform: translateY(-2px);
+}
+
+.btn-draw:disabled {
+  background: #444;
+  color: #888;
+  border-color: #666;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.stats {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.btn-reset {
+  background: var(--primary-color); /* Fundo sólido — sempre legível sobre o blur */
+  color: var(--gold);
+  border: 1.5px solid var(--gold);
+  padding: 10px 15px;
+  font-size: 0.95rem;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 12px;
+  width: 100%;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: bold;
+  font-family: 'Times New Roman', Times, serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-reset:hover {
+  background: #6a1010;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Modal de Confirmação --- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.modal-box {
+  background: var(--paper);
+  border: 3px double var(--gold);
+  border-radius: 12px;
+  padding: 40px 50px;
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
+  max-width: 400px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin: 0 0 10px 0;
+}
+
+.modal-text {
+  font-size: 1rem;
+  color: #666;
+  margin: 0 0 30px 0;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.modal-btn-cancel {
+  background: transparent;
+  color: #666;
+  border: 1px solid #ccc;
+  padding: 10px 25px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: 'Times New Roman', Times, serif;
+  transition: all 0.2s;
+}
+
+.modal-btn-cancel:hover {
+  background: #f0f0f0;
+}
+
+.modal-btn-confirm {
+  background: var(--primary-color);
+  color: var(--gold);
+  border: 2px solid var(--gold);
+  padding: 10px 25px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  font-family: 'Times New Roman', Times, serif;
+  transition: all 0.2s;
+}
+
+.modal-btn-confirm:hover {
+  background: #6a1010;
+}
+
+/* --- A Bíblia (Estrutura 3D Corrigida) --- */
+.book-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  perspective: 2500px;
+}
+
+.book {
+  position: relative;
+  width: 504px; /* Aumentado para TV */
+  height: 700px; /* Aumentado para TV */
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.book.open {
+  transform: translateX(120px); /* Valor calculado: evita corte à esquerda sem sobrepor o card */
+}
+
+/* Elementos Base */
+.book-part {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform-origin: left center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+/* Capa Frontal (Contém a capa e a página esquerda no verso) */
+.cover-front {
+  z-index: 10;
+}
+
+.book.open .cover-front {
+  transform: rotateY(-180deg);
+}
+
+.face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 5px 15px 15px 5px;
+}
+
+/* Lado de fora da capa */
+.face.front {
+  background: var(--primary-color);
+  color: var(--gold);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-left: 20px solid #2d0505;
+  box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+.face.front h1 {
+  font-size: 2.5rem !important; /* Aumentado */
+  text-align: center;
+  margin-top: 30px;
+}
+
+.face.front p {
+  font-size: 0.9rem !important; /* Aumentado */
+  letter-spacing: 4px;
+  margin-top: 15px;
+}
+
+/* Lado de dentro da capa (Página Esquerda) */
+.face.back {
+  background: var(--paper);
+  transform: rotateY(180deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  box-sizing: border-box;
+  border-right: 15px solid #d4c4a8;
+  z-index: 1;
+}
+
+.face.back .page-content p {
+  font-weight: bold;
+  color: #888;
+  font-size: 1.1rem !important; /* Aumentado */
+  margin-bottom: 10px;
+}
+
+#historyList {
+  font-size: 1rem !important; /* Aumentado */
+  color: #999;
+  line-height: 1.5;
+  margin-top: 15px;
+}
+
+/* Página Direita (Fixa ao fundo) */
+.page-right {
+  background: var(--paper);
+  border-radius: 5px 15px 15px 5px;
+  z-index: 5;
+  padding: 40px; /* Mais padding */
+  box-sizing: border-box;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-right .page-content div:first-child {
+  font-size: 1.2rem !important; /* O escolhido é... */
+  color: #777;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.page-right .page-content div:last-child {
+  font-style: italic;
+  font-size: 1.1rem !important; /* Versículo maior */
+  color: #555;
+  margin-top: 25px;
+  line-height: 1.4;
+}
+
+/* Conteúdo Interno */
+.page-content {
+  border: 2px double rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.winner-name {
+  font-size: 4rem; /* Aumentado para TV */
+  color: var(--primary-color);
+  font-weight: bold;
+  margin: 30px 0;
+  line-height: 1.1;
+}
+
+.cross {
+  width: 70px; /* Aumentado proporcionalmente */
+  height: 126px; /* Aumentado proporcionalmente */
+  background: var(--gold);
+  position: relative;
+}
+
+.cross::after {
+  content: "";
+  position: absolute;
+  width: 126px; /* Aumentado proporcionalmente */
+  height: 35px; /* Aumentado proporcionalmente */
+  background: var(--gold);
+  top: 31px;
+  left: -28px;
+}
+
+.divine-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.6) 0%,
+    transparent 70%
+  );
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s;
+}
+
+.book.open ~ .divine-glow {
+  opacity: 1;
+}
+
+#customAlert {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: #333;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 50px;
+  transition: transform 0.3s;
+  z-index: 10000;
+}
+
+#customAlert.show {
+  transform: translateX(-50%) translateY(0);
+}
